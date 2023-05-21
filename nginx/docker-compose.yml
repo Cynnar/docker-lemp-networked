@@ -1,0 +1,33 @@
+# Services
+services:
+
+    # PHP Service
+    php:
+        build:
+            dockerfile: php-dockerfile
+        container_name: php8
+        volumes:
+            - './public:/var/www/html'
+        networks:
+            - mariadb_database_service_network
+
+    # Nginx Service
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        ports:
+            - 80:80
+        links:
+            - 'php'
+        volumes:
+            - './public:/var/www/html'
+            - './nginx-conf:/etc/nginx/conf.d'
+        depends_on:
+            - php
+        networks:
+            - mariadb_database_service_network
+
+  
+networks:
+    mariadb_database_service_network:
+        external: true

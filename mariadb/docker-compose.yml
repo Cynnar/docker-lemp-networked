@@ -1,0 +1,26 @@
+# Services
+services:
+
+    # MariaDB Service
+    db:
+        image: mariadb:latest
+        container_name: mariadb
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_ROOT_HOST: ${DB_ROOT_HOST}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        env_file:
+            - ./.env
+        ports:
+            - 3306:3306
+        networks:
+            - database_service_network
+        volumes:
+            - ./data:/var/lib/mysql
+        command: 
+            --max-allowed-packet=100M # added option to allow large imports
+networks:
+    database_service_network:
+  
